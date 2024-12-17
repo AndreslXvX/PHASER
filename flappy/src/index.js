@@ -3,11 +3,21 @@
 
 
 import Phaser, { Physics } from "phaser";
+import EscenaJuego from "./Escenas/EscenaJuego";
+
+  const WIDTH = 800
+  const HEIGHT = 600
+  const POSICION_INICIAL_PAJARITO = { x: WIDTH / 10, y: HEIGHT / 2}
+  const SHARED_CONFIG = {
+    width: WIDTH,
+    height: HEIGHT,
+    posicionInicial: POSICION_INICIAL_PAJARITO
+
+  }
 
  const config = {
     type : Phaser.AUTO,
-    width : 800,
-    height : 600,
+    ...SHARED_CONFIG,
     physics: {
       default : 'arcade',
       arcade: {
@@ -15,17 +25,12 @@ import Phaser, { Physics } from "phaser";
       }
 
     },
-    scene: {
-      preload,
-      create,
-      update,
-    }
+    scene: [new EscenaJuego(SHARED_CONFIG)]
  }
 
  
 const VELOCIDAD = 200;
 const GRAVEDAD = 1000;
-const posicionInicialPajarito = { x: config.width / 10, y: config.height / 2}
 let rangoDeDistanciaXdeTubitos = [200, 500]
 let distanciaXentreTubos = 0 
 
