@@ -86,6 +86,14 @@ class EscenaJuego extends Phaser.Scene {
       }
   }
   gameOver() {
+
+    const textoPuntajeMaximo = localStorage.getItem('PuntajeMaximo')
+    const puntajeMaximio = textoPuntajeMaximo && parseInt(textoPuntajeMaximo, 10)
+        if (!puntajeMaximio || this.score < puntajeMaximio ) {
+            localStorage.setItem('puntajeMaximo', this.score)
+        }
+
+
     this.physics.pause()
     this.time.addEvent({
         delay: 1000,
