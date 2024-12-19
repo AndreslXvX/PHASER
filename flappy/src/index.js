@@ -2,9 +2,13 @@
 
 
 
-import Phaser, { Physics } from "phaser";
+import Phaser, { Physics, Scenes } from "phaser";
 import EscenaJuego from "./Escenas/EscenaJuego";
+import MenuPrincipal  from "./Escenas/MenuPrincipal";
+import EscenaPreCarga from "./Escenas/EscenaPreCarga";
 
+
+ 
   const WIDTH = 800
   const HEIGHT = 600
   const POSICION_INICIAL_PAJARITO = { x: WIDTH / 10, y: HEIGHT / 2}
@@ -16,6 +20,10 @@ import EscenaJuego from "./Escenas/EscenaJuego";
     velocidadSaltos: VELOCIDAD_SALTOS
 
   }
+  const escenas = [EscenaPreCarga, MenuPrincipal, EscenaJuego]
+  const crearEscenas = escenas => new escenas(SHARED_CONFIG)
+  const innitScenes = () => escenas.map(crearEscenas) 
+  
  const config = {
     type : Phaser.AUTO,
     ...SHARED_CONFIG,
@@ -26,7 +34,7 @@ import EscenaJuego from "./Escenas/EscenaJuego";
       }
 
     },
-    scene: [new EscenaJuego(SHARED_CONFIG)]
+    scene: innitScenes()
  }
  
 

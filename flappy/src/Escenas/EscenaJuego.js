@@ -7,18 +7,12 @@ class EscenaJuego extends Phaser.Scene {
     super("EscenaJuego");
     this.config = config;
     this.pajarito = null;
-    this.velocidadSalto = 400;
+    this.velocidadSalto = 300;
     this.tubitos = null;
     this.velocidadtubitos = 200;
     this.rangoDeDistanciaXdeTubitos = [300, 400];
     this.puntos = null
     this.textoPuntos = ' '
-  }
-
-  preload() {
-    this.load.image("cielo", "assets/sky.png");
-    this.load.image("pajarito", "assets/bird.png");
-    this.load.image("tubito", "assets/pipe.png");
   }
 
   create() {
@@ -28,16 +22,40 @@ class EscenaJuego extends Phaser.Scene {
     this.asignarTeclas();
     this.crearColisiones();
     this.crearPuntos();
+    this.crearBotonDePausa()
   }
   update() {
     this.detectarTubosFuera();
     this.alturaPajarito();
+    this.guardarPuntos()
+  }
+  
+  crearBotonDePausa() {
+    const botonPausa= this.add.image(this.config.width - 10, this.config.height - 10, "pausa").setScale(2).setOrigin(1).setInteractive()
+    botonPausa.on('pointerdown', () => {
+      
+        this.physics.pause()
+        this.scene.pause()
+    
+    
+      
+    })
+  }
+  guardarPuntos() {
+    const textoPuntajeMaximo = localStorage.getItem('PuntajeMaximo')
+
+    const puntajeMaximio = textoPuntajeMaximo && parseInt(textoPuntajeMaximo, 10)
+
+        if (!puntajeMaximio || this.puntos > puntajeMaximio ) {
+            localStorage.setItem('PuntajeMaximo', this.puntos)
+        }
   }
 
   crearPuntos() {
     this.puntos = 0
+    const puntajeMaximo = localStorage.getItem('PuntajeMaximo')
     this.textoPuntos = this.add.text(16, 16, `Puntos: ${0}`, {fontSize: '32px', fill: '#000' })
-    this.add.text(16, 56, `Mejor puntaje: ${0} `, {fontSize: '16px', fill: 'x000'})
+    this.add.text(16, 56, `Mejor puntaje: ${puntajeMaximo || 0} `, {fontSize: '16px', fill: 'x000'})
   }
 
   actualizarPuntos() {
@@ -86,12 +104,6 @@ class EscenaJuego extends Phaser.Scene {
       }
   }
   gameOver() {
-
-    const textoPuntajeMaximo = localStorage.getItem('PuntajeMaximo')
-    const puntajeMaximio = textoPuntajeMaximo && parseInt(textoPuntajeMaximo, 10)
-        if (!puntajeMaximio || this.score < puntajeMaximio ) {
-            localStorage.setItem('puntajeMaximo', this.score)
-        }
 
 
     this.physics.pause()
