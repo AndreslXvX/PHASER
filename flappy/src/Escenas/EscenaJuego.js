@@ -1,11 +1,13 @@
-import Phaser from "phaser";
+
+import EscenaBase from "./EscenaBase";
+
 
 const NUMERO_TUBITOS = 4;
 
-class EscenaJuego extends Phaser.Scene {
+class EscenaJuego extends EscenaBase {
   constructor(config) {
-    super("EscenaJuego");
-    this.config = config;
+    super("EscenaJuego", config);
+
     this.pajarito = null;
     this.velocidadSalto = 300;
     this.tubitos = null;
@@ -16,7 +18,7 @@ class EscenaJuego extends Phaser.Scene {
   }
 
   create() {
-    this.crearFondo();
+    super.create()
     this.crearPajarito();
     this.crearTubitos();
     this.asignarTeclas();

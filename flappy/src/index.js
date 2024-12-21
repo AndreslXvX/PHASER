@@ -2,7 +2,8 @@
 
 
 
-import Phaser, { Physics, Scenes } from "phaser";
+import Phaser from "phaser";
+
 import EscenaJuego from "./Escenas/EscenaJuego";
 import MenuPrincipal  from "./Escenas/MenuPrincipal";
 import EscenaPreCarga from "./Escenas/EscenaPreCarga";

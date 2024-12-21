@@ -1,19 +1,21 @@
 
-import  Phaser  from "phaser";
+import EscenaBase from "./EscenaBase";
 
 
-class MenuPrincipal extends Phaser.Scene {
+class MenuPrincipal extends EscenaBase {
 
     constructor(config) {
-        super("MenuPrincipal");
-        this.config = config;
+        super("MenuPrincipal", config);
+
+        this.menu = [
+            {escena: "EscenaJuego", texto: "Jugar"}, 
+            {escena: "EscenaPuntaje", texto: 'Puntaje'},
+            {escena: null, texto: 'Salir'}
+        ]
       }
     create() {
-    this.scene.start('EscenaJuego');
-    }
-        
-    crearFondo() {
-        this.add.image(0, 0, "cielo").setOrigin(0, 0);
+        super.create()
+        this.crearMenu(this.menu)
     }
 }
 

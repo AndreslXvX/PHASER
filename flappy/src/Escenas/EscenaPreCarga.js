@@ -1,12 +1,9 @@
 
 import  Phaser  from "phaser";
-
-
 class EscenaPreCarga extends Phaser.Scene {
 
-    constructor(config) {
+    constructor() {
         super("EscenaPreCarga");
-        this.config = config;
       }
 
 
