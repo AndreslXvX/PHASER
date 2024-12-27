@@ -2,22 +2,21 @@
 import EscenaBase from "./EscenaBase";
 
 
-class MenuPrincipal extends EscenaBase {
+class EscenaPausa extends EscenaBase {
 
     constructor(config) {
-        super("MenuPrincipal", config);
+        super("EscenaPausa", config);
 
         this.menu = [
-            {escena: "EscenaJuego", texto: "Jugar"}, 
-            {escena: "EscenaPuntaje", texto: 'Puntaje'},
-            {escena: null, texto: 'Salir'}
+            {escena: "EscenaJuego", texto: "Continuar"},
+            {escena: "MenuPrincpal", texto: "salir"},
         ]
       }
     create() {
-        super.create()
+        
+        this.add.image(0,0, 'cielo').setOrigin(0).setAlpha(0.5)
         this.crearMenu(this.menu, this.eventosMenu.bind(this))
     }
-
     eventosMenu(menuItem) {
         const texto = menuItem.textoMenu;
         texto.setInteractive()
@@ -31,14 +30,16 @@ class MenuPrincipal extends EscenaBase {
         })
 
         texto.on('pointerup', () => {
-            menuItem.escena && this.scene.start(menuItem.escena)
-
-            if(menuItem.texto === 'Salir') {
-                this.game.destroy(true)
+            if(menuItem.escena && menuItem.texto === 'Continuar') {
+                this.scene.stop()
+                this.scene.resume(menuItem.escena)
+            } else {
+                this.scene.stop('EscenaJuego')
+                this.scene.start('MenuPrincipal')
             }
         })
         
     }
 }
 
-export default MenuPrincipal;
+export default EscenaPausa

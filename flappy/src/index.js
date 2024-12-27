@@ -7,6 +7,8 @@ import Phaser from "phaser";
 import EscenaJuego from "./Escenas/EscenaJuego";
 import MenuPrincipal  from "./Escenas/MenuPrincipal";
 import EscenaPreCarga from "./Escenas/EscenaPreCarga";
+import EscenaPuntaje from './Escenas/EscenaPuntaje';
+import EscenaPausa from './Escenas/EscenaPausa'
 
 
  
@@ -21,7 +23,7 @@ import EscenaPreCarga from "./Escenas/EscenaPreCarga";
     velocidadSaltos: VELOCIDAD_SALTOS
 
   }
-  const escenas = [EscenaPreCarga, MenuPrincipal, EscenaJuego]
+  const escenas = [EscenaPreCarga, MenuPrincipal, EscenaJuego, EscenaPuntaje, EscenaPausa]
   const crearEscenas = escenas => new escenas(SHARED_CONFIG)
   const innitScenes = () => escenas.map(crearEscenas) 
   

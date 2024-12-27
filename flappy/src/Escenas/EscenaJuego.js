@@ -9,10 +9,10 @@ class EscenaJuego extends EscenaBase {
     super("EscenaJuego", config);
 
     this.pajarito = null;
-    this.velocidadSalto = 300;
+    this.velocidadSalto = 400;
     this.tubitos = null;
     this.velocidadtubitos = 200;
-    this.rangoDeDistanciaXdeTubitos = [300, 400];
+    this.rangoDeDistanciaXdeTubitos = [300, 350];
     this.puntos = null
     this.textoPuntos = ' '
   }
@@ -38,7 +38,7 @@ class EscenaJuego extends EscenaBase {
       
         this.physics.pause()
         this.scene.pause()
-    
+        this.scene.launch('EscenaPausa')
     
       
     })
@@ -46,10 +46,12 @@ class EscenaJuego extends EscenaBase {
   guardarPuntos() {
     const textoPuntajeMaximo = localStorage.getItem('PuntajeMaximo')
 
-    const puntajeMaximio = textoPuntajeMaximo && parseInt(textoPuntajeMaximo, 10)
+    const puntajeMaximo = textoPuntajeMaximo && parseInt(textoPuntajeMaximo, 10)
 
-        if (!puntajeMaximio || this.puntos > puntajeMaximio ) {
+        if (!puntajeMaximo || this.puntos > puntajeMaximo ) {
             localStorage.setItem('PuntajeMaximo', this.puntos)
+        } else if (puntajeMaximo == null) {
+          localStorage.setItem('PuntajeMaximo', '0')
         }
   }
 
@@ -124,7 +126,7 @@ class EscenaJuego extends EscenaBase {
 
   reciclarTubos(tubitoS, tubitoI) {
     const distanciaXdeTubitos = this.distanciaXdeTubos();
-    const rangoDeDistanciaEntreTubitos = [100, 200];
+    const rangoDeDistanciaEntreTubitos = [100, 150];
     const DistanciaYEntreTubitos = Phaser.Math.Between(
       ...rangoDeDistanciaEntreTubitos
     );
