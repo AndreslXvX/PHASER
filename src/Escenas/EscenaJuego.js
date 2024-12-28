@@ -2,22 +2,29 @@
 import EscenaBase from "./EscenaBase";
 
 
-const NUMERO_TUBITOS = 4;
+const NUMERO_TUBITOS = 5;
 
 class EscenaJuego extends EscenaBase {
   constructor(config) {
     super("EscenaJuego", config);
 
     this.pajarito = null;
-    this.velocidadSalto = 400;
+    this.velocidadSalto = 350;
     this.tubitos = null;
     this.velocidadtubitos = 200;
-    this.rangoDeDistanciaXdeTubitos = [300, 350];
     this.puntos = null
     this.textoPuntos = ' '
+    this.dificultadActual = 'facil'
+
+    this.dificultades = {
+    'facil' : {rangoDeDistanciaXdeTubitos : [300, 350], rangoDeDistanciaEntreTubitos: [130, 140]},
+    'normal' : {rangoDeDistanciaXdeTubitos : [300, 350], rangoDeDistanciaEntreTubitos: [120, 130]},
+    'dificil' : {rangoDeDistanciaXdeTubitos : [300, 350], rangoDeDistanciaEntreTubitos: [80, 100]}
+    }
   }
 
   create() {
+    this.dificultadActual = 'dificil'
     super.create()
     this.crearPajarito();
     this.crearTubitos();
@@ -25,15 +32,47 @@ class EscenaJuego extends EscenaBase {
     this.crearColisiones();
     this.crearPuntos();
     this.crearBotonDePausa()
+    this.listenEvents();
+
   }
   update() {
     this.detectarTubosFuera();
     this.alturaPajarito();
     this.guardarPuntos()
   }
+
+  listenEvents() {
+    if (this.eventoPausa) {return;}
+    this.eventoPausa = this.events.on('resume', () => {
+      this.tiempoInicial = 3
+      this.textoTemporizador = this.add.text(...this.posicionDeMenu, 'Empieza en: ' + this.tiempoInicial, this.estiloFuente)
+      .setOrigin(0.5, 1)
+      this.temporizador = this.time.addEvent({
+        delay: 1000,
+        callbackScope: this,
+        callback: () => {
+        this.tiempoInicial--
+        this.textoTemporizador.setText('Empieza en: ' + this.tiempoInicial)
+        console.log(" " + this.tiempoInicial)
+        if( this.tiempoInicial <= 0){
+          
+          this.textoTemporizador.setText(' ')
+          this.physics.resume()
+          this.scene.resume()
+          this.temporizador.destroy(true)
+        }
+      },
+        loop: true
+      })
+    })
+  }
   
   crearBotonDePausa() {
-    const botonPausa= this.add.image(this.config.width - 10, this.config.height - 10, "pausa").setScale(2).setOrigin(1).setInteractive()
+    const botonPausa= this.add.image(this.config.width - 10, this.config.height - 10, "pausa")
+    .setScale(2)
+    .setOrigin(1)
+    .setInteractive()
+    .setScale(4)
     botonPausa.on('pointerdown', () => {
       
         this.physics.pause()
@@ -109,7 +148,6 @@ class EscenaJuego extends EscenaBase {
   }
   gameOver() {
 
-
     this.physics.pause()
     this.time.addEvent({
         delay: 1000,
@@ -120,23 +158,19 @@ class EscenaJuego extends EscenaBase {
     })
   }
 
-  
-
-  
-
   reciclarTubos(tubitoS, tubitoI) {
     const distanciaXdeTubitos = this.distanciaXdeTubos();
-    const rangoDeDistanciaEntreTubitos = [100, 150];
     const DistanciaYEntreTubitos = Phaser.Math.Between(
-      ...rangoDeDistanciaEntreTubitos
+      ...this.dificultades[this.dificultadActual].rangoDeDistanciaEntreTubitos
     );
     const posicionDeLosTubitos = Phaser.Math.Between(
       40,
       this.config.height - 40 - DistanciaYEntreTubitos
     );
     const distanciaXentreTubitos = Phaser.Math.Between(
-      ...this.rangoDeDistanciaXdeTubitos
+      ...this.dificultades[this.dificultadActual].rangoDeDistanciaXdeTubitos
     );
+    
 
     tubitoS.y = posicionDeLosTubitos;
     tubitoS.x = distanciaXdeTubitos + distanciaXentreTubitos;
@@ -147,12 +181,11 @@ class EscenaJuego extends EscenaBase {
     this.tubitos.setVelocityX(-this.velocidadtubitos);
   }
   distanciaXdeTubos() {
-    let distanciaXentreTubos = 0;
+    let distanciaXentreTubos = 350;
 
     this.tubitos.getChildren().forEach(function (tubo) {
       distanciaXentreTubos = Math.max(tubo.x, distanciaXentreTubos);
     });
-
     return distanciaXentreTubos;
   }
   detectarTubosFuera() {
@@ -163,9 +196,17 @@ class EscenaJuego extends EscenaBase {
         if (tuboTemporal.length == 2) {
           this.reciclarTubos(...tuboTemporal);
           this.actualizarPuntos()
+          this.aumentarDificultad()
         }
       }
     });
+  }
+  aumentarDificultad() {
+    if (this.puntos === 10) {
+      this.dificultadActual = 'normal'
+    } else if (this.puntos === 20) {
+      this.dificultadActual = 'dificil'
+    }
   }
 
   saltar() {

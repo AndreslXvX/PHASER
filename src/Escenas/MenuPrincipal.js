@@ -1,5 +1,6 @@
 
 import EscenaBase from "./EscenaBase";
+import EscenaJuego from "./EscenaJuego";
 
 
 class MenuPrincipal extends EscenaBase {
@@ -10,7 +11,7 @@ class MenuPrincipal extends EscenaBase {
         this.menu = [
             {escena: "EscenaJuego", texto: "Jugar"}, 
             {escena: "EscenaPuntaje", texto: 'Puntaje'},
-            {escena: null, texto: 'Salir'}
+            {escena: null, texto: 'Salir'},
         ]
       }
     create() {
@@ -35,7 +36,7 @@ class MenuPrincipal extends EscenaBase {
 
             if(menuItem.texto === 'Salir') {
                 this.game.destroy(true)
-            }
+            } 
         })
         
     }

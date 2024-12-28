@@ -23,7 +23,7 @@ import EscenaPausa from './Escenas/EscenaPausa'
     velocidadSaltos: VELOCIDAD_SALTOS
 
   }
-  const escenas = [EscenaPreCarga, MenuPrincipal, EscenaJuego, EscenaPuntaje, EscenaPausa]
+  const escenas = [EscenaPreCarga, MenuPrincipal, EscenaPuntaje, EscenaJuego, EscenaPausa]
   const crearEscenas = escenas => new escenas(SHARED_CONFIG)
   const innitScenes = () => escenas.map(crearEscenas) 
   
