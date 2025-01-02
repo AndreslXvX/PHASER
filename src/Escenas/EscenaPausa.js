@@ -14,7 +14,7 @@ class EscenaPausa extends EscenaBase {
       }
     create() {
         
-        this.add.image(0,0, 'cielo').setOrigin(0).setAlpha(0.5)
+        // this.add.image(0,0, 'cielo').setOrigin(0).setAlpha(0.5)
         this.crearMenu(this.menu, this.eventosMenu.bind(this))
     }
     eventosMenu(menuItem) {

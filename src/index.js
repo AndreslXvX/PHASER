@@ -14,7 +14,7 @@ import EscenaPausa from './Escenas/EscenaPausa'
  
   const WIDTH = 800
   const HEIGHT = 600
-  const POSICION_INICIAL_PAJARITO = { x: WIDTH / 10, y: HEIGHT / 2}
+  const POSICION_INICIAL_PAJARITO = { x: WIDTH / 3, y: HEIGHT / 2}
   const VELOCIDAD_SALTOS = 400
   const SHARED_CONFIG = {
     width: WIDTH,
@@ -30,10 +30,12 @@ import EscenaPausa from './Escenas/EscenaPausa'
  const config = {
     type : Phaser.AUTO,
     ...SHARED_CONFIG,
+    pixelArt: true,
     physics: {
       default : 'arcade',
       arcade: {
-        debug : true
+        
+        // debug : true
       }
 
     },
